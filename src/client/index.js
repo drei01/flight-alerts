@@ -7,7 +7,6 @@ import intl from 'intl';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import api from 'api/index';
 import App from './App';
 
 // global styles
@@ -17,7 +16,5 @@ import './style.scss';
 if (!window.Intl) {
   window.Intl = intl;
 }
-
-api.setEndpoint('/api');
 
 ReactDOM.render(<App />, document.getElementById('app'));
