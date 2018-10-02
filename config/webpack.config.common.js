@@ -1,9 +1,12 @@
 const {resolve, join} = require('path');
+const {readFileSync} = require('fs');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const postcssPresetEnv = require('postcss-preset-env');
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
+
+const lessToJs = require('less-vars-to-js');
+const themeVariables = lessToJs(readFileSync(join(__dirname, '../src/client/ant-default-vars.less'), 'utf8'));
 
 module.exports = {
   target: 'web',
@@ -17,43 +20,29 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        use: ['babel-loader'],
-        exclude: /node_modules/
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+        options: {
+          plugins: [['import', {libraryName: 'antd', style: true}]]
+        }
       },
       {
         test: /\.html$/,
         loader: 'html-loader'
       },
       {
-        test: /\.s?css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: {
-            loader: 'style-loader',
-            options: {sourceMap: IS_DEV}
-          },
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                localIdentName: IS_DEV ? '[path]-[name]_[local]' : '[name]_[local]_[hash:5]', // [hash:base64]
-                modules: true,
-                sourceMap: IS_DEV
-              }
-            },
-            {
-              loader: 'sass-loader',
-              options: {sourceMap: IS_DEV}
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                ident: 'postcss',
-                plugins: () => [postcssPresetEnv()],
-                sourceMap: IS_DEV
-              }
+        test: /\.less$/,
+        use: [
+          {loader: 'style-loader'},
+          {loader: 'css-loader'},
+          {
+            loader: 'less-loader',
+            options: {
+              modifyVars: themeVariables,
+              javascriptEnabled: true
             }
-          ]
-        })
+          }
+        ]
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,

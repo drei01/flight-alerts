@@ -1,16 +1,16 @@
 import React from 'react';
 import {hot} from 'react-hot-loader';
 import api from './api';
+import {List, Spin} from 'antd';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {flights: null};
+    this.state = {flights: null, loading: true};
   }
 
   componentDidMount() {
-    //&partner=flightlist&limit=20&maxstopovers=10&price_to=3000&maxFlyDuration=60&stopoverfrom=00:00&stopoverto=30:00&selectedAirlines=&dtimefrom=00:00&dtimeto=23:59
     const sort = 'price';
     const currency = 'EUR';
     const adults = 1;
@@ -56,21 +56,25 @@ class App extends React.Component {
         dtimeto: timeTo
       })
       .then((flights) => {
-        this.setState({flights});
+        this.setState({flights, loading: false});
       });
   }
 
   render() {
-    const {flights} = this.state;
+    const {flights, loading} = this.state;
     return (
       <div className="App">
-        {flights && (
-          <ul>
-            {flights.map((flight) => (
-              <li>{flight.id}</li>
-            ))}
-          </ul>
-        )}
+        <Spin spinning={loading}>
+          {flights && (
+            <List
+              header={<div>Header</div>}
+              footer={<div>Footer</div>}
+              bordered
+              dataSource={flights}
+              renderItem={(flight) => <List.Item>{flight.id}</List.Item>}
+            />
+          )}
+        </Spin>
       </div>
     );
   }
