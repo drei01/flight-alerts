@@ -2,6 +2,7 @@ const {resolve, join} = require('path');
 const {readFileSync} = require('fs');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
 
@@ -39,7 +40,8 @@ module.exports = {
             loader: 'less-loader',
             options: {
               modifyVars: themeVariables,
-              javascriptEnabled: true
+              javascriptEnabled: true,
+              modules: true
             }
           }
         ]
@@ -55,7 +57,8 @@ module.exports = {
       filename: '[name].css',
       disable: IS_DEV
     }),
-    new webpack.EnvironmentPlugin(['NODE_ENV'])
+    new webpack.EnvironmentPlugin(['NODE_ENV']),
+    new CopyWebpackPlugin([{from: './src/client/static'}])
   ],
   resolve: {
     modules: ['node_modules', join('src', 'client')]

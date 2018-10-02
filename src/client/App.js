@@ -1,7 +1,12 @@
 import React from 'react';
 import {hot} from 'react-hot-loader';
 import api from './api';
-import {List, Spin} from 'antd';
+import {Icon, Layout, List, Spin, Row, Col} from 'antd';
+import ReactSVG from 'react-svg';
+
+import styles from './style.less';
+
+const {Header, Content} = Layout;
 
 class App extends React.Component {
   constructor(props) {
@@ -63,19 +68,26 @@ class App extends React.Component {
   render() {
     const {flights, loading} = this.state;
     return (
-      <div className="App">
-        <Spin spinning={loading}>
-          {flights && (
-            <List
-              header={<div>Header</div>}
-              footer={<div>Footer</div>}
-              bordered
-              dataSource={flights}
-              renderItem={(flight) => <List.Item>{flight.id}</List.Item>}
-            />
-          )}
-        </Spin>
-      </div>
+      <Layout>
+        <Header>
+          <h1>
+            <Icon type="coffee" theme="outlined" /> Grab a coffee, you've got some cheap flights to buy.
+          </h1>
+        </Header>
+        <Content>
+          <Spin spinning={loading}>
+            {flights && (
+              <List
+                header={<div>Header</div>}
+                footer={<div>Footer</div>}
+                bordered
+                dataSource={flights}
+                renderItem={(flight) => <List.Item>{flight.id}</List.Item>}
+              />
+            )}
+          </Spin>
+        </Content>
+      </Layout>
     );
   }
 }
