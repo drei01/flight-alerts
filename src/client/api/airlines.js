@@ -4875,19 +4875,16 @@ const airlines = [
 
 const getId = get('id');
 
-getAirline.operation = 'READ';
 function getAirline(code) {
-  return new Promise((resolve) => {
-    const matchesId = compose(
-      isEqual(code),
-      getId
-    );
+  const matchesId = compose(
+    isEqual(code),
+    getId
+  );
 
-    resolve( {
-      logo: `https://images.kiwi.com/airlines/32/${code}.png`,
-      ...find(matchesId, airlines)
-    });
-  });
+  return {
+    logo: `https://images.kiwi.com/airlines/32/${code}.png`,
+    ...find(matchesId, airlines)
+  };
 }
 
 export {getAirline};
