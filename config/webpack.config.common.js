@@ -1,13 +1,9 @@
 const {resolve, join} = require('path');
-const {readFileSync} = require('fs');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
-
-const lessToJs = require('less-vars-to-js');
-const themeVariables = lessToJs(readFileSync(join(__dirname, '../src/client/ant-default-vars.less'), 'utf8'));
 
 module.exports = {
   target: 'web',
@@ -22,10 +18,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        exclude: /node_modules/,
-        options: {
-          plugins: [['import', {libraryName: 'antd', style: true}]]
-        }
+        exclude: /node_modules/
       },
       {
         test: /\.html$/,
@@ -37,14 +30,20 @@ module.exports = {
           {loader: 'style-loader'},
           {loader: 'css-loader'},
           {
+            loader: 'postcss-loader' // add vendor prefixes
+          },
+          {
             loader: 'less-loader',
             options: {
-              modifyVars: themeVariables,
               javascriptEnabled: true,
               modules: true
             }
           }
         ]
+      },
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader'
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
@@ -61,7 +60,10 @@ module.exports = {
     new CopyWebpackPlugin([{from: './src/client/static'}])
   ],
   resolve: {
-    modules: ['node_modules', join('src', 'client')]
+    modules: ['node_modules', join('src', 'client')],
+    alias: {
+      jquery: join(__dirname, './jquery-stub.js')
+    }
   },
   optimization: {
     splitChunks: {

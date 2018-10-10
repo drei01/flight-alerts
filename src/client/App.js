@@ -1,93 +1,85 @@
 import React from 'react';
 import {hot} from 'react-hot-loader';
 import api from './api';
-import {Icon, Layout, List, Spin, Row, Col} from 'antd';
-import ReactSVG from 'react-svg';
-
-import styles from './style.less';
-
-const {Header, Content} = Layout;
+import FlightList from './components/FlightList';
+import Filters from './components/Filters';
+import {Grid, Row, Col, Alert} from 'react-bootstrap';
+import moment from 'moment';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {flights: null, loading: true};
+    this.state = {
+      flights: null,
+      error: null,
+      loading: true,
+      config: {
+        sort: 'price',
+        currency: 'GBP',
+        adults: 1,
+        from: 'DE',
+        to: '',
+        startDate: moment().format('DD/MM/YYYY'),
+        endDate: moment().format('DD/MM/YYYY'),
+        limit: 20,
+        maxStopOvers: 0,
+        priceMax: 3000,
+        maxFlightDuration: 60,
+        airlines: [],
+        timeFrom: '00:00',
+        timeTo: '23:59'
+      }
+    };
   }
 
   componentDidMount() {
-    const sort = 'price';
-    const currency = 'EUR';
-    const adults = 1;
-    const from = 'DE';
-    const to = '';
-    const startDate = '14/09/2018';
-    const endDate = '13/10/2018';
-    const limit = 20;
-    const maxStopOvers = 0;
-    const priceMax = 3000;
-    const maxFlightDuration = 60;
-    const airlines = [];
-    const timeFrom = '00:00';
-    const timeTo = '23:59';
-
+    const {config} = this.state;
     api.skypicker
       .getFlights({
-        sort: sort,
+        sort: config.sort,
         asc: 1,
         locale: 'us',
-        curr: currency,
+        curr: config.currency,
         daysInDestinationFrom: '',
         daysInDestinationTo: '',
-        adults: adults,
+        adults: config.adults,
         children: 0,
         infants: 0,
-        flyFrom: from,
-        to: to,
+        flyFrom: config.from,
+        to: config.to,
         typeFlight: 'oneway',
         returnFrom: '',
         returnTo: '',
-        dateFrom: startDate,
-        dateTo: endDate,
+        dateFrom: config.startDate,
+        dateTo: config.endDate,
         partner: 'picky',
-        limit: limit,
-        maxstopovers: maxStopOvers,
-        price_to: priceMax,
-        maxFlyDuration: maxFlightDuration,
+        limit: config.limit,
+        maxstopovers: config.maxStopOvers,
+        price_to: config.priceMax,
+        maxFlyDuration: config.maxFlightDuration,
         stopoverfrom: '00:00',
         stopoverto: '30:00',
-        selectedAirlines: airlines.join(','),
-        dtimefrom: timeFrom,
-        dtimeto: timeTo
+        selectedAirlines: config.airlines.join(','),
+        dtimefrom: config.timeFrom,
+        dtimeto: config.timeTo
       })
-      .then((flights) => {
-        this.setState({flights, loading: false});
-      });
+      .then((flights) => this.setState({flights, loading: false}))
+      .catch((error) => this.setState({error, loading: false}));
   }
 
   render() {
-    const {flights, loading} = this.state;
+    const {flights, loading, error} = this.state;
     return (
-      <Layout>
-        <Header>
-          <h1>
-            <Icon type="coffee" theme="outlined" /> Grab a coffee, you've got some cheap flights to buy.
-          </h1>
-        </Header>
-        <Content>
-          <Spin spinning={loading}>
-            {flights && (
-              <List
-                header={<div>Header</div>}
-                footer={<div>Footer</div>}
-                bordered
-                dataSource={flights}
-                renderItem={(flight) => <List.Item>{flight.id}</List.Item>}
-              />
-            )}
-          </Spin>
-        </Content>
-      </Layout>
+      <Grid>
+        <Row className="show-grid">
+          {error && <Alert bsStyle={'danger'}>Something went wrong loading the flight data. Please try again.</Alert>}
+          <Col md={5}>
+            <Filters onChange={() => {}} />
+          </Col>
+          <Col md={7}>{flights && <FlightList flights={flights} loading={loading} />}</Col>
+        </Row>
+      </Grid>
     );
   }
 }
