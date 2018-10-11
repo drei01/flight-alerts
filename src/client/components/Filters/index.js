@@ -8,6 +8,7 @@ export default ({onChange}) => {
       <div className={styles['theme-search-results-sidebar-section-price']}>
         <ReactBootstrapSlider value={10} min={1} max={1000} />
       </div>
+      Filters appear here
     </div>
   );
 };

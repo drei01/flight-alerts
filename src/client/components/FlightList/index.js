@@ -10,6 +10,10 @@ export default ({flights, loading}) => {
     return noLoadingIndicators.map((k) => <LoadingIndicator key={k} />);
   }
 
+  if (!flights || flights.length == 0) {
+    return <span>No results</span>;
+  }
+
   return (
     <div className={styles['theme-search-results']}>
       {flights.map((flight) => (

@@ -28,9 +28,11 @@ module.exports = {
         test: /\.less$/,
         use: [
           {loader: 'style-loader'},
-          {loader: 'css-loader'},
           {
-            loader: 'postcss-loader' // add vendor prefixes
+            loader: 'css-loader',
+            options: {
+              modules: true
+            }
           },
           {
             loader: 'less-loader',

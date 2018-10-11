@@ -18,10 +18,11 @@ const transform = map(transformFlight);
 getFlights.operation = 'READ';
 function getFlights(query) {
   const url = `${BASE_URL}?${queryUtils.toQueryString(query)}`;
-  return fetch(url).then((response) => {
-    const {data} = response.json();
-    return transform(data);
-  });
+  return fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then(({data}) => transform(data));
 }
 
 export {getFlights};

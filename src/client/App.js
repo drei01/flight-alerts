@@ -21,7 +21,9 @@ class App extends React.Component {
         from: 'DE',
         to: '',
         startDate: moment().format('DD/MM/YYYY'),
-        endDate: moment().format('DD/MM/YYYY'),
+        endDate: moment()
+          .add(30, 'days')
+          .format('DD/MM/YYYY'),
         limit: 20,
         maxStopOvers: 0,
         priceMax: 3000,
@@ -77,7 +79,9 @@ class App extends React.Component {
           <Col md={5}>
             <Filters onChange={() => {}} />
           </Col>
-          <Col md={7}>{flights && <FlightList flights={flights} loading={loading} />}</Col>
+          <Col md={7}>
+            <FlightList flights={flights} loading={loading} />
+          </Col>
         </Row>
       </Grid>
     );
