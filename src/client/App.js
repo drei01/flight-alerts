@@ -74,6 +74,7 @@ class App extends React.Component {
     const {flights, loading, error} = this.state;
     return (
       <Grid>
+        <Row>Find Cheap Flights</Row>
         <Row className="show-grid">
           {error && <Alert bsStyle={'danger'}>Something went wrong loading the flight data. Please try again.</Alert>}
           <Col md={5}>

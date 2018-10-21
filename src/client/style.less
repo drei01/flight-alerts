@@ -1,7 +1,33 @@
-@import '~bootstrap/dist/css/bootstrap.css';
-@import '~bootstrap/dist/css/bootstrap-theme.css';
-
-/*  --PAGE SECTION--  */
+body {
+  background-color: #efefef;
+}
+.btn {
+  transition: 0.2s;
+  border-radius: 2px;
+  letter-spacing: 0.75px;
+  font-size: 13px;
+  position: relative;
+  font-weight: 500;
+  font-family: helvetica, Arial, sans-serif;
+}
+.btn-primary-invert {
+  background: #ff6c2d;
+  border-color: #ff570f;
+  color: #fff;
+}
+.btn-primary-invert:hover {
+  color: #fff;
+  background: #ff570f;
+  border-color: #f04800;
+}
+.theme-hero-text-title {
+  font-size: 50px;
+  margin-bottom: 30px;
+  font-weight: 200;
+  margin-top: 0;
+  line-height: 1em;
+  letter-spacing: 0;
+}
 .theme-page-header-abs {
   color: #fff;
   position: absolute;
@@ -3623,12 +3649,11 @@ body {
   right: -15px;
   left: auto;
 }
+.theme-search-results-item-flight-section-path-line-start .theme-search-results-item-flight-section-path-icon {
+  transform: rotate(315deg);
+}
 .theme-search-results-item-flight-section-path-line-end .theme-search-results-item-flight-section-path-icon {
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -o-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
+  transform: rotate(45deg);
 }
 .theme-search-results-item-flight-section-path-line-middle,
 .theme-search-results-item-flight-section-path-line-middle-1,

@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import 'whatwg-fetch';
+import './bootstrap.css';
 
 import intl from 'intl';
 import React from 'react';
