@@ -1,14 +1,23 @@
 import React from 'react';
 import styles from '../../style.less';
-import ReactBootstrapSlider from 'react-bootstrap-slider';
+import PriceFilter from './PriceFilter';
 
-export default ({onChange}) => {
+export default ({config, onChange}) => {
+  const {currencySymbol, priceMax} = config;
   return (
     <div className={styles['theme-search-results-sidebar']}>
-      <div className={styles['theme-search-results-sidebar-section-price']}>
-        <ReactBootstrapSlider value={10} min={1} max={1000} />
+      <div className={styles['theme-search-results-sidebar-sections']}>
+        <PriceFilter
+          currencySymbol={currencySymbol}
+          price={priceMax}
+          onChange={(newPrice) => {
+            onChange({
+              ...config,
+              priceMax: newPrice
+            });
+          }}
+        />
       </div>
-      Filters appear here
     </div>
   );
 };

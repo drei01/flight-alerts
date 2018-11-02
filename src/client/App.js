@@ -17,6 +17,7 @@ class App extends React.Component {
       config: {
         sort: 'price',
         currency: 'GBP',
+        currencySymbol: '£',
         adults: 1,
         from: 'DE',
         to: '',
@@ -36,6 +37,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.loadFlights();
+  }
+
+  loadFlights() {
     const {config} = this.state;
     api.skypicker
       .getFlights({
@@ -71,14 +76,19 @@ class App extends React.Component {
   }
 
   render() {
-    const {flights, loading, error} = this.state;
+    const {flights, loading, error, config} = this.state;
     return (
       <Grid>
         <Row>Find Cheap Flights</Row>
         <Row className="show-grid">
           {error && <Alert bsStyle={'danger'}>Something went wrong loading the flight data. Please try again.</Alert>}
           <Col md={5}>
-            <Filters onChange={() => {}} />
+            <Filters
+              config={config}
+              onChange={(newConfig) => {
+                this.setState({config: newConfig, loading: true}, this.loadFlights);
+              }}
+            />
           </Col>
           <Col md={7}>
             <FlightList flights={flights} loading={loading} />
