@@ -5,6 +5,10 @@ import FlightList from './components/FlightList';
 import Filters from './components/Filters';
 import {Grid, Row, Col, Alert} from 'react-bootstrap';
 import moment from 'moment';
+import Header from './components/Header';
+import Nav from './components/Nav';
+import styles from './style.less';
+import c from 'classnames';
 
 class App extends React.Component {
   constructor(props) {
@@ -78,23 +82,30 @@ class App extends React.Component {
   render() {
     const {flights, loading, error, config} = this.state;
     return (
-      <Grid>
-        <Row>Find Cheap Flights</Row>
-        <Row className="show-grid">
-          {error && <Alert bsStyle={'danger'}>Something went wrong loading the flight data. Please try again.</Alert>}
-          <Col md={5}>
-            <Filters
-              config={config}
-              onChange={(newConfig) => {
-                this.setState({config: newConfig, loading: true}, this.loadFlights);
-              }}
-            />
-          </Col>
-          <Col md={7}>
-            <FlightList flights={flights} loading={loading} />
-          </Col>
-        </Row>
-      </Grid>
+      <div>
+        <Nav />
+        <Header />
+        <div className={c(styles['theme-page-section'], styles['theme-page-section-gray'])}>
+          <Grid>
+            <Row className="show-grid">
+              {error && (
+                <Alert bsStyle={'danger'}>Something went wrong loading the flight data. Please try again.</Alert>
+              )}
+              <Col md={3}>
+                <Filters
+                  config={config}
+                  onChange={(newConfig) => {
+                    this.setState({config: newConfig, loading: true}, this.loadFlights);
+                  }}
+                />
+              </Col>
+              <Col md={9}>
+                <FlightList flights={flights} loading={loading} />
+              </Col>
+            </Row>
+          </Grid>
+        </div>
+      </div>
     );
   }
 }
