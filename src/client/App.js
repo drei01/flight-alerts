@@ -23,7 +23,7 @@ class App extends React.Component {
         currency: 'GBP',
         currencySymbol: '£',
         adults: 1,
-        from: 'DE',
+        from: 'SXF',
         to: '',
         startDate: moment().format('DD/MM/YYYY'),
         endDate: moment()
@@ -46,6 +46,7 @@ class App extends React.Component {
 
   loadFlights() {
     const {config} = this.state;
+    this.setState({loading: true});
     api.skypicker
       .getFlights({
         sort: config.sort,
@@ -84,7 +85,13 @@ class App extends React.Component {
     return (
       <div>
         <Nav />
-        <Header />
+        <Header
+          onChangeAirport={(airport) => {
+            this.setState((prevState) => {
+              return {config: {...prevState.config, from: airport.iata}};
+            }, this.loadFlights);
+          }}
+        />
         <div className={c(styles['theme-page-section'], styles['theme-page-section-gray'])}>
           <Grid>
             <Row className="show-grid">

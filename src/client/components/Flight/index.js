@@ -21,17 +21,8 @@ export default ({flight}) => {
           <Col md={10}>
             <div className={styles['theme-search-results-item-flight-sections']}>
               <div className={styles['theme-search-results-item-flight-section']}>
-                <div className={styles['row row-no-gutter row-eq-height']}>
-                  <Col md={2}>
-                    <div className={styles['theme-search-results-item-flight-section-airline-logo-wrap']}>
-                      <img
-                        className={styles['theme-search-results-item-flight-section-airline-logo']}
-                        src={airline.logo}
-                        alt={airline.name}
-                        title={airline.name}
-                      />
-                    </div>
-                  </Col>
+                <Row className={styles['row row-no-gutter row-eq-height']}>
+                  <Col md={2}>{flight.departure.format('MMM DD')}</Col>
                   <Col md={10}>
                     <div className={styles['theme-search-results-item-flight-section-item']}>
                       <Row>
@@ -47,15 +38,27 @@ export default ({flight}) => {
                       </Row>
                     </div>
                   </Col>
-                </div>
-                <h5 className={styles['theme-search-results-item-flight-section-airline-title']}>
-                  Operated by {airline.name}
-                </h5>
+                </Row>
+                <Row>
+                  <Col md={2}>
+                    <h5 className={styles['theme-search-results-item-flight-section-airline-title']}>
+                      <img
+                        className={styles['theme-search-results-item-flight-section-airline-logo']}
+                        src={airline.logo}
+                        alt={airline.name}
+                        title={airline.name}
+                      />
+                      Operated by {airline.name}
+                    </h5>
+                  </Col>
+                  <Col md={2} />
+                  <Col md={8} />
+                </Row>
               </div>
             </div>
           </Col>
           <Col md={2}>
-            <BookButton price={flight.price} />
+            <BookButton price={flight.price} link={flight.deep_link} />
           </Col>
         </Row>
       </div>

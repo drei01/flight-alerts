@@ -3,7 +3,7 @@ import {Button} from 'react-bootstrap';
 import styles from '../../../style.less';
 import c from 'classnames';
 
-export default ({price, onClick}) => {
+export default ({price, link}) => {
   return (
     <div className={styles['theme-search-results-item-book']}>
       <div className={styles['theme-search-results-item-price']}>
@@ -17,8 +17,8 @@ export default ({price, onClick}) => {
           styles['btn-primary-invert'],
           'btn-block'
         )}
-        href="#"
-        onClick={onClick}
+        rel="noopener noreferrer"
+        href={link}
       >
         Book Now
       </Button>

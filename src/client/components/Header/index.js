@@ -1,18 +1,13 @@
 import React from 'react';
 import styles from '../../style.less';
 import c from 'classnames';
+import Destination from '../Filters/Destination';
 
-export default function() {
+export default function({onChangeAirport}) {
   return (
     <div className={c(styles['theme-hero-area'], styles.front)}>
       <div className={styles['theme-hero-area-bg-wrap']}>
-        <div
-          className={c(styles['theme-hero-area-bg'], styles['theme-hero-area-bg-blur'])}
-          style={{
-            backgroundImage:
-              'url(https://images.unsplash.com/photo-1506012787146-f92b2d7d6d96?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0d424e0c724d80f5f3b23c02201b8648&auto=format&fit=crop&w=3298&q=80)'
-          }}
-        />
+        <div className={c(styles['theme-hero-area-bg'], styles['theme-hero-area-bg-blur'])} />
         <div className={c(styles['theme-hero-area-mask'], styles['theme-hero-area-mask-half'])} />
       </div>
       <div className={styles['theme-hero-area-body']}>
@@ -21,7 +16,7 @@ export default function() {
             <div className={c(styles['theme-search-area'], styles['_mob-h'], styles['theme-search-area-white'])}>
               <div className={c(styles['theme-search-area-header'], styles['_mb-20'])}>
                 <h1 className={c(styles['theme-search-area-title'], styles['theme-search-area-title-sm'])}>
-                  Find cheap flights to anywhere
+                  Find cheap flights from <Destination onChange={onChangeAirport} />
                 </h1>
               </div>
             </div>

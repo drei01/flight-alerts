@@ -1,0 +1,31 @@
+:global(.rbt-input-hint-container) {
+  display: inline;
+  width: auto;
+}
+
+.wrapper {
+  display: inline;
+  width: auto;
+  //anti .clearfix
+  &:before {
+    display: block;
+    content: none;
+  }
+
+  &:after {
+    clear: none;
+  }
+}
+
+.input {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid white;
+  border-radius: 0;
+  display: inline;
+  width: auto;
+  min-width: 400px;
+  font-size: 27px;
+  letter-spacing: 0.33px;
+  color: #fff;
+}
