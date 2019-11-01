@@ -13,7 +13,7 @@ export default class PriceFilter extends React.Component {
     const {price} = this.state;
     return (
       <div>
-        <h5 className={styles['theme-search-results-sidebar-section-title']}>Price</h5>
+        <h5 className={styles['theme-search-results-sidebar-section-title']}>Max Price</h5>
         <div className={styles['theme-search-results-sidebar-section-price']}>
           <ReactBootstrapSlider
             value={price}

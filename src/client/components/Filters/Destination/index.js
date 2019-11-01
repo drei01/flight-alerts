@@ -8,7 +8,7 @@ export default function({city, onChange}) {
   const [options, setOptions] = useState([]);
   const handleSearch = (query) => {
     setLoading(true);
-    api.airports.queryAirports(query).then((results) => {
+    api.skypicker.queryAirports(query).then((results) => {
       setLoading(false);
       setOptions(results);
     });

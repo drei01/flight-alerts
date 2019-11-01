@@ -41,35 +41,6 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.getLocation();
-  }
-
-  getLocation() {
-    return api.geolocation.getLocation().then((res) => {
-      if (res && res.city) {
-        api.airports.queryCities(res.city).then((res) => {
-          if (res && res.length > 0) {
-            this.setState(
-              (prevState) => {
-                const {config, ...other} = prevState;
-                return {
-                  ...other,
-                  geoCity: res[0].name,
-                  config: {
-                    ...config,
-                    from: res[0].code
-                  }
-                };
-              },
-              () => this.loadFlights()
-            );
-          }
-        });
-      }
-    });
-  }
-
   loadFlights() {
     const {config} = this.state;
     if (!config.from) {
@@ -138,7 +109,7 @@ class App extends React.Component {
                   />
                 </Col>
               )}
-              <Col md={flights ? 9 : 12}>
+              <Col md={flights || loading ? 9 : 12}>
                 <FlightList flights={flights} loading={loading} />
               </Col>
             </Row>
