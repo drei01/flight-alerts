@@ -2,6 +2,7 @@ import React from 'react';
 import {List as LoadingIndicator} from 'react-content-loader';
 import Flight from '../Flight';
 import styles from '../../style.less';
+import EmptyState from '../EmptyState';
 
 const noLoadingIndicators = [...Array(10).keys()];
 
@@ -11,7 +12,11 @@ export default ({flights, loading}) => {
   }
 
   if (!flights || flights.length == 0) {
-    return <span>No results</span>;
+    return (
+      <EmptyState title="Search for flights">
+        Enter a city or airport above to search for the cheapest flights.
+      </EmptyState>
+    );
   }
 
   return (

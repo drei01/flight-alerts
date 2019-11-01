@@ -10,13 +10,15 @@ export default function() {
         styles['navbar-inverse'],
         styles['navbar-theme'],
         styles['navbar-theme-abs'],
-        styles['navbar-theme-transparent'],
-        styles['navbar-theme-border']
+        styles['navbar-theme-transparent']
       )}
     >
       <Navbar.Header>
         <Navbar.Brand>
-          <a href="#">Fly Cheap</a>
+          <a href="#" className={styles.logo}>
+            <img src="flight-pop.svg" />
+            FlightPop
+          </a>
         </Navbar.Brand>
       </Navbar.Header>
     </Navbar>

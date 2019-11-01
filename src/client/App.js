@@ -17,13 +17,14 @@ class App extends React.Component {
     this.state = {
       flights: null,
       error: null,
-      loading: true,
+      loading: false,
+      geoCity: null,
       config: {
         sort: 'price',
         currency: 'GBP',
         currencySymbol: '£',
         adults: 1,
-        from: 'SXF',
+        from: null,
         to: '',
         startDate: moment().format('DD/MM/YYYY'),
         endDate: moment()
@@ -41,11 +42,39 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.loadFlights();
+    this.getLocation();
+  }
+
+  getLocation() {
+    return api.geolocation.getLocation().then((res) => {
+      if (res && res.city) {
+        api.airports.queryCities(res.city).then((res) => {
+          if (res && res.length > 0) {
+            this.setState(
+              (prevState) => {
+                const {config, ...other} = prevState;
+                return {
+                  ...other,
+                  geoCity: res[0].name,
+                  config: {
+                    ...config,
+                    from: res[0].code
+                  }
+                };
+              },
+              () => this.loadFlights()
+            );
+          }
+        });
+      }
+    });
   }
 
   loadFlights() {
     const {config} = this.state;
+    if (!config.from) {
+      return;
+    }
     this.setState({loading: true});
     api.skypicker
       .getFlights({
@@ -81,14 +110,15 @@ class App extends React.Component {
   }
 
   render() {
-    const {flights, loading, error, config} = this.state;
+    const {flights, loading, geoCity, error, config} = this.state;
     return (
       <div>
         <Nav />
         <Header
+          geoCity={geoCity}
           onChangeAirport={(airport) => {
             this.setState((prevState) => {
-              return {config: {...prevState.config, from: airport.iata}};
+              return {config: {...prevState.config, from: airport}};
             }, this.loadFlights);
           }}
         />
@@ -98,15 +128,17 @@ class App extends React.Component {
               {error && (
                 <Alert bsStyle={'danger'}>Something went wrong loading the flight data. Please try again.</Alert>
               )}
-              <Col md={3}>
-                <Filters
-                  config={config}
-                  onChange={(newConfig) => {
-                    this.setState({config: newConfig, loading: true}, this.loadFlights);
-                  }}
-                />
-              </Col>
-              <Col md={9}>
+              {(flights || loading) && (
+                <Col md={3}>
+                  <Filters
+                    config={config}
+                    onChange={(newConfig) => {
+                      this.setState({config: newConfig, loading: true}, this.loadFlights);
+                    }}
+                  />
+                </Col>
+              )}
+              <Col md={flights ? 9 : 12}>
                 <FlightList flights={flights} loading={loading} />
               </Col>
             </Row>

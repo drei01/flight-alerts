@@ -6,10 +6,23 @@ var airports = require('airport-codes-updated')
     return a;
   });
 
+const axios = require('axios');
+
 module.exports = function setup(app) {
   app.get('/api/airports', (req, res) => {
     const results = airports.filter((a) => isMatch(a, req.query.q));
     res.json(results);
+  });
+
+  app.get('/api/geolocation', (req, res) => {
+    const ipAddress = req.ip;
+    if (!ipAddress) {
+      res.json({});
+    } else {
+      axios.get(`http://ip-api.com/json/${ipAddress}`).then((r) => {
+        res.json(r.data);
+      });
+    }
   });
 };
 

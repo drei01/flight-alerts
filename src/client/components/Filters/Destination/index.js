@@ -3,7 +3,7 @@ import {AsyncTypeahead} from 'react-bootstrap-typeahead';
 import styles from './style.less';
 import api from '../../../api';
 
-export default function({onChange}) {
+export default function({city, onChange}) {
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState([]);
   const handleSearch = (query) => {
@@ -16,7 +16,7 @@ export default function({onChange}) {
 
   const handleChange = (selectedOptions) => {
     if (selectedOptions && selectedOptions[0]) {
-      onChange(selectedOptions[0]);
+      onChange(selectedOptions[0].code);
     }
   };
 
@@ -28,10 +28,10 @@ export default function({onChange}) {
       options={options}
       labelKey="name"
       selectHintOnEnter={true}
-      filterBy={['name', 'city', 'country', 'iata']}
+      filterBy={['name', 'code']}
       multiple={false}
       onSearch={handleSearch}
-      placeholder="Airport..."
+      placeholder={city || 'Airport or City...'}
       onChange={handleChange}
       className={styles.wrapper}
       inputProps={{className: styles.input}}

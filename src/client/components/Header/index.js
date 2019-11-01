@@ -3,7 +3,7 @@ import styles from '../../style.less';
 import c from 'classnames';
 import Destination from '../Filters/Destination';
 
-export default function({onChangeAirport}) {
+export default function({geoCity, onChangeAirport}) {
   return (
     <div className={c(styles['theme-hero-area'], styles.front)}>
       <div className={styles['theme-hero-area-bg-wrap']}>
@@ -16,7 +16,7 @@ export default function({onChangeAirport}) {
             <div className={c(styles['theme-search-area'], styles['_mob-h'], styles['theme-search-area-white'])}>
               <div className={c(styles['theme-search-area-header'], styles['_mb-20'])}>
                 <h1 className={c(styles['theme-search-area-title'], styles['theme-search-area-title-sm'])}>
-                  Find cheap flights from <Destination onChange={onChangeAirport} />
+                  Find cheap flights from <Destination city={geoCity} onChange={onChangeAirport} />
                 </h1>
               </div>
             </div>
