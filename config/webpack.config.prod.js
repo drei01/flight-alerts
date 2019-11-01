@@ -2,12 +2,18 @@ const {resolve} = require('path');
 const merge = require('webpack-merge');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPartialsPlugin = require('html-webpack-partials-plugin');
 
 const commonConfig = require('./webpack.config.common');
 
 module.exports = merge(commonConfig, {
   mode: 'production',
   plugins: [
+    new HtmlWebpackPartialsPlugin({
+      path: './src/client/partials/analytics.html',
+      location: 'head',
+      priority: 'high'
+    }),
     new UglifyJsPlugin({
       parallel: true,
       extractComments: true
