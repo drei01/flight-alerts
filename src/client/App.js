@@ -87,9 +87,15 @@ class App extends React.Component {
         <Nav />
         <Header
           geoCity={geoCity}
-          onChangeAirport={(airport) => {
+          sourceAirport={config.from}
+          onChangeSource={(airport) => {
             this.setState((prevState) => {
               return {config: {...prevState.config, from: airport}};
+            }, this.loadFlights);
+          }}
+          onChangeDestination={(airport) => {
+            this.setState((prevState) => {
+              return {config: {...prevState.config, to: airport}};
             }, this.loadFlights);
           }}
         />

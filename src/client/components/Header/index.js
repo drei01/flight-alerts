@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from '../../style.less';
 import c from 'classnames';
-import Destination from '../Filters/Destination';
+import Airport from '../Filters/Airport';
 
-export default function({geoCity, onChangeAirport}) {
+export default function({geoCity, sourceAirport, onChangeSource, onChangeDestination}) {
   return (
     <div className={c(styles['theme-hero-area'], styles.front)}>
       <div className={styles['theme-hero-area-bg-wrap']}>
@@ -16,7 +16,12 @@ export default function({geoCity, onChangeAirport}) {
             <div className={c(styles['theme-search-area'], styles['_mob-h'], styles['theme-search-area-white'])}>
               <div className={c(styles['theme-search-area-header'], styles['_mb-20'])}>
                 <h1 className={c(styles['theme-search-area-title'], styles['theme-search-area-title-sm'])}>
-                  Find cheap flights from <Destination city={geoCity} onChange={onChangeAirport} />
+                  Find cheap flights from <Airport city={geoCity} onChange={onChangeSource} />
+                  {sourceAirport && (
+                    <span>
+                      to <Airport onChange={onChangeDestination} />
+                    </span>
+                  )}
                 </h1>
               </div>
             </div>
