@@ -9,6 +9,7 @@ import Header from './components/Header';
 import Nav from './components/Nav';
 import styles from './style.less';
 import c from 'classnames';
+import ErrorBoundary from './components/ErrorBoundary';
 
 class App extends React.Component {
   constructor(props) {
@@ -25,7 +26,9 @@ class App extends React.Component {
         currencySymbol: '£',
         adults: 1,
         from: null,
+        fromType: 'airport',
         to: '',
+        typType: 'airport',
         startDate: moment().format('DD/MM/YYYY'),
         endDate: moment()
           .add(30, 'days')
@@ -59,6 +62,7 @@ class App extends React.Component {
         children: 0,
         infants: 0,
         flyFrom: config.from,
+        flyFrom_type: config.fromType,
         to: config.to,
         typeFlight: 'oneway',
         returnFrom: '',
@@ -83,19 +87,19 @@ class App extends React.Component {
   render() {
     const {flights, loading, geoCity, error, config} = this.state;
     return (
-      <div>
+      <ErrorBoundary>
         <Nav />
         <Header
           geoCity={geoCity}
           sourceAirport={config.from}
-          onChangeSource={(airport) => {
+          onChangeSource={({code, type}) => {
             this.setState((prevState) => {
-              return {config: {...prevState.config, from: airport}};
+              return {config: {...prevState.config, from: code, fromType: type}};
             }, this.loadFlights);
           }}
-          onChangeDestination={(airport) => {
+          onChangeDestination={({code, type}) => {
             this.setState((prevState) => {
-              return {config: {...prevState.config, to: airport}};
+              return {config: {...prevState.config, to: code, toType: type}};
             }, this.loadFlights);
           }}
         />
@@ -121,7 +125,7 @@ class App extends React.Component {
             </Row>
           </Grid>
         </div>
-      </div>
+      </ErrorBoundary>
     );
   }
 }
