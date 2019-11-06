@@ -2,7 +2,6 @@ const {resolve, join} = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPartialsPlugin = require('html-webpack-partials-plugin');
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
 
@@ -10,7 +9,7 @@ module.exports = {
   target: 'web',
   entry: ['./src/client/index.js'],
   output: {
-    publicPath: '/',
+    publicPath: '',
     path: resolve(__dirname, '..', 'build', 'client'),
     filename: '[name].js'
   },
