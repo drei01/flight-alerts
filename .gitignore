@@ -1,5 +1,0 @@
-build-dev
-node_modules
-.tags*
-.idea
-*.log
