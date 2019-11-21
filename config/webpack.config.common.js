@@ -9,7 +9,7 @@ module.exports = {
   target: 'web',
   entry: ['./src/client/index.js'],
   output: {
-    publicPath: '',
+    publicPath: '/',
     path: resolve(__dirname, '..', 'build', 'client'),
     filename: '[name].js'
   },

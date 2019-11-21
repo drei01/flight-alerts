@@ -27,7 +27,7 @@ const PLACES = [
 ];
 
 const getRandomPlace = () => {
-  return 'places/' + PLACES[Math.floor(Math.random() * (PLACES.length - 1))];
+  return '/places/' + PLACES[Math.floor(Math.random() * (PLACES.length - 1))];
 };
 
 export default ({title, children}) => {
