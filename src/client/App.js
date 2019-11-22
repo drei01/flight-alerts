@@ -12,6 +12,7 @@ import Nav from './components/Nav';
 import styles from './style.less';
 import c from 'classnames';
 import ErrorBoundary from './components/ErrorBoundary';
+import Footer from './components/Footer';
 
 class App extends React.Component {
   constructor(props) {
@@ -127,6 +128,7 @@ class App extends React.Component {
             </Row>
           </Grid>
         </div>
+        <Footer />
       </ErrorBoundary>
     );
   }
