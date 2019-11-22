@@ -1,3 +1,5 @@
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 import React from 'react';
 import {hot} from 'react-hot-loader';
 import api from './api';

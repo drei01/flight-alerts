@@ -1,0 +1,19 @@
+.DateRangePicker_picker,
+.SingleDatePicker_picker {
+  z-index: 2; /*position date picker above search results*/
+}
+
+.CalendarDay__selected,
+.CalendarDay__selected:active,
+.CalendarDay__selected:hover {
+  background-color: #ff6c2d;
+  border-color: #ff570f;
+}
+
+.DayPickerKeyboardShortcuts_show__bottomRight::before {
+  border-right-color: #efefef;
+}
+
+.DateInput_input__focused {
+  border-bottom-color: #0480be;
+}

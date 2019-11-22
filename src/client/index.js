@@ -1,5 +1,8 @@
 import 'babel-polyfill';
 import 'whatwg-fetch';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+import './react-dates-style-overrides.css';
 import './bootstrap.css';
 import './static/fonts.css';
 
