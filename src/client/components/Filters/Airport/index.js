@@ -26,7 +26,8 @@ export default function({city, onChange}) {
     }
   };
 
-  const handleSuggestionSelected = (_event, {suggestion: {code, type}}) => {
+  const handleSuggestionSelected = (_event, {suggestion: {name, code, type}}) => {
+    setValue(name);
     onChange({code, type});
   };
 

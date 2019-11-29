@@ -38,20 +38,6 @@ export default ({config, onChange}) => {
             />
           </div>
         </Filter>
-        <Filter title="Return">
-          <div className={styles['theme-search-results-sidebar-section-price']}>
-            <DateFilter
-              name="endDate"
-              date={endDate ? moment(endDate, 'DD/MM/YYYY') : null}
-              onChange={(date) => {
-                onChange({
-                  ...config,
-                  endDate: date.format('DD/MM/YYYY')
-                });
-              }}
-            />
-          </div>
-        </Filter>
       </div>
     </div>
   );
