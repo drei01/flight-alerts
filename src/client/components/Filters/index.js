@@ -32,7 +32,8 @@ export default ({config, onChange}) => {
               onChange={(date) => {
                 onChange({
                   ...config,
-                  startDate: date.format('DD/MM/YYYY')
+                  startDate: date.format('DD/MM/YYYY'),
+                  endDate: date.format('DD/MM/YYYY')
                 });
               }}
             />
