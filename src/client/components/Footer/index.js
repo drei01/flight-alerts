@@ -1,11 +1,10 @@
 import React from 'react';
 import {Row, Col} from 'react-bootstrap';
 import styles from './style.less';
-import c from 'classnames';
 
 export default function Footer() {
   return (
-    <footer className={c(styles.footer, 'navbar-fixed-bottom')}>
+    <footer className={styles.footer}>
       <Col md={8} mdOffset={2}>
         <Row>
           <Col md={3}>

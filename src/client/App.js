@@ -36,13 +36,15 @@ class App extends React.Component {
         endDate: moment()
           .add(30, 'days')
           .format('DD/MM/YYYY'),
+        returnDate: null,
         limit: 20,
         maxStopOvers: 0,
         priceMax: 3000,
         maxFlightDuration: 60,
         airlines: [],
         timeFrom: '00:00',
-        timeTo: '23:59'
+        timeTo: '23:59',
+        returnFlight: false
       }
     };
   }
@@ -67,9 +69,9 @@ class App extends React.Component {
         flyFrom: config.from,
         flyFrom_type: config.fromType,
         to: config.to,
-        typeFlight: 'oneway',
-        returnFrom: '',
-        returnTo: '',
+        typeFlight: config.returnFlight ? 'round' : 'oneway',
+        returnFrom: config.returnFlight ? config.returnDate : '',
+        returnTo: config.returnFlight ? config.returnDate : '',
         dateFrom: config.startDate,
         dateTo: config.endDate,
         partner: 'picky',
