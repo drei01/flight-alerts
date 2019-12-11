@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Autosuggest from 'react-autosuggest';
 import api from '../../../api';
 import styles from './style.less';
+import c from 'classnames';
 
 const renderSuggestion = (suggestion) => {
   return suggestion.name;
@@ -44,7 +45,7 @@ export default function({city, onChange}) {
       renderSuggestion={renderSuggestion}
       onSuggestionsClearRequested={handleClearSuggestions}
       inputProps={{
-        className: styles.input,
+        className: c('col-md-6', styles.input),
         placeholder: city || 'Airport or Place...',
         onChange: handleChange,
         value
