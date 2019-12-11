@@ -47,7 +47,7 @@ export default ({flight}) => {
                         src={airline.logo}
                         alt={airline.name}
                         title={airline.name}
-                      />
+                      />{' '}
                       Operated by {airline.name}
                     </h5>
                   </Col>
