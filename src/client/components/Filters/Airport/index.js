@@ -32,24 +32,21 @@ export default function({city, onChange}) {
     onChange({code, type});
   };
 
-  const handleClearSuggestions = () => {
-    setOptions([]);
-  };
-
   return (
-    <Autosuggest
-      suggestions={options}
-      onSuggestionsFetchRequested={handleSearch}
-      onSuggestionSelected={handleSuggestionSelected}
-      getSuggestionValue={getSuggestionValue}
-      renderSuggestion={renderSuggestion}
-      onSuggestionsClearRequested={handleClearSuggestions}
-      inputProps={{
-        className: c('col-md-6', styles.input),
-        placeholder: city || 'Airport or Place...',
-        onChange: handleChange,
-        value
-      }}
-    />
+    <div className={styles.wrapper}>
+      <Autosuggest
+        suggestions={options}
+        onSuggestionsFetchRequested={handleSearch}
+        onSuggestionSelected={handleSuggestionSelected}
+        getSuggestionValue={getSuggestionValue}
+        renderSuggestion={renderSuggestion}
+        inputProps={{
+          className: c('col-md-6', styles.input),
+          placeholder: city || 'Airport or Place...',
+          onChange: handleChange,
+          value
+        }}
+      />
+    </div>
   );
 }
