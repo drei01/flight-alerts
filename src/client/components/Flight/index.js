@@ -3,8 +3,8 @@ import c from 'classnames';
 import styles from '../../style.less';
 import {Row, Col} from 'react-bootstrap';
 import DateTime from './DateTime';
-import RouteList from './RouteList';
 import BookButton from './BookButton';
+import Route from './Route';
 
 export default ({flight}) => {
   const {airline} = flight;
@@ -25,17 +25,19 @@ export default ({flight}) => {
                   <Col md={2}>{flight.departure.format('MMM DD')}</Col>
                   <Col md={10}>
                     <div className={styles['theme-search-results-item-flight-section-item']}>
-                      <Row>
-                        <Col md={3}>
-                          <DateTime date={flight.departure} place={flight.cityFrom} />
-                        </Col>
-                        <Col md={6}>
-                          <RouteList routes={flight.routes} duration={flight.fly_duration} />
-                        </Col>
-                        <Col md={3}>
-                          <DateTime date={flight.arrival} place={flight.cityTo} />
-                        </Col>
-                      </Row>
+                      {flight.route.map((route) => (
+                        <Row key={route.flight_no}>
+                          <Col md={3}>
+                            <DateTime date={route.departure} place={flight.cityFrom} />
+                          </Col>
+                          <Col md={6}>
+                            <Route route={route} duration={flight.fly_duration} />
+                          </Col>
+                          <Col md={3}>
+                            <DateTime date={route.arrival} place={flight.cityTo} />
+                          </Col>
+                        </Row>
+                      ))}
                     </div>
                   </Col>
                 </Row>

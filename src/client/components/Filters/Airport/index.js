@@ -38,6 +38,7 @@ export default function({city, onChange}) {
         suggestions={options}
         onSuggestionsFetchRequested={handleSearch}
         onSuggestionSelected={handleSuggestionSelected}
+        onSuggestionsClearRequested={() => setOptions([])}
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
         inputProps={{

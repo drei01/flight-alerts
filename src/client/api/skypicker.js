@@ -1,4 +1,4 @@
-import {map} from 'lodash/fp';
+import {compose, get, map} from 'lodash/fp';
 import moment from 'moment';
 import queryUtils from './query-utils';
 import * as airlines from './airlines';
@@ -7,14 +7,26 @@ const BASE_URL = 'https://api.skypicker.com/flights';
 const API_KEY = '1dHVtsPhJAfAUgPS1jb7TJ4I12NSexz7';
 
 const transformFlight = (flight) => {
+  const {dTime, aTime, route} = flight;
+
   return {
-    departure: moment(new Date(flight.dTime * 1000)),
-    arrival: moment(new Date(flight.aTime * 1000)),
+    ...flight,
+    departure: moment(new Date(dTime * 1000)),
+    arrival: moment(new Date(aTime * 1000)),
     airline: airlines.getAirline(flight.airlines[0]),
-    ...flight
+    route: route.map((r) => {
+      return {
+        ...r,
+        departure: moment(new Date(r.dTime * 1000)),
+        arrival: moment(new Date(r.aTime * 1000))
+      };
+    })
   };
 };
-const transform = map(transformFlight);
+const transform = compose(
+  map(transformFlight),
+  get('data')
+);
 
 getFlights.operation = 'READ';
 function getFlights(query) {
@@ -23,7 +35,7 @@ function getFlights(query) {
     .then((response) => {
       return response.json();
     })
-    .then(({data}) => transform(data));
+    .then(transform);
 }
 
 queryAirports.operation = 'READ';
