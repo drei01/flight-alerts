@@ -1,6 +1,6 @@
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import React from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {hot} from 'react-hot-loader';
 import api from './api';
 import FlightList from './components/FlightList';
@@ -14,47 +14,45 @@ import c from 'classnames';
 import ErrorBoundary from './components/ErrorBoundary';
 import Footer from './components/Footer';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
+const DEFAULT_CONFIG = {
+  sort: 'price',
+  currency: 'GBP',
+  currencySymbol: '£',
+  adults: 1,
+  from: null,
+  fromType: 'airport',
+  to: '',
+  typType: 'airport',
+  startDate: moment().format('DD/MM/YYYY'),
+  endDate: moment()
+    .add(30, 'days')
+    .format('DD/MM/YYYY'),
+  returnDate: null,
+  limit: 20,
+  maxStopOvers: 0,
+  priceMax: 3000,
+  maxFlightDuration: 60,
+  airlines: [],
+  timeFrom: '00:00',
+  timeTo: '23:59',
+  returnFlight: false
+};
 
-    this.state = {
-      flights: null,
-      error: null,
-      loading: false,
-      geoCity: null,
-      config: {
-        sort: 'price',
-        currency: 'GBP',
-        currencySymbol: '£',
-        adults: 1,
-        from: null,
-        fromType: 'airport',
-        to: '',
-        typType: 'airport',
-        startDate: moment().format('DD/MM/YYYY'),
-        endDate: moment()
-          .add(30, 'days')
-          .format('DD/MM/YYYY'),
-        returnDate: null,
-        limit: 20,
-        maxStopOvers: 0,
-        priceMax: 3000,
-        maxFlightDuration: 60,
-        airlines: [],
-        timeFrom: '00:00',
-        timeTo: '23:59',
-        returnFlight: false
-      }
-    };
-  }
+const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetParent.offsetTop);
 
-  loadFlights() {
-    const {config} = this.state;
+function App() {
+  const [flights, setFlights] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(null);
+  const [config, setConfig] = useState(DEFAULT_CONFIG);
+
+  const flightsRef = useRef(null);
+
+  const loadFlights = () => {
     if (!config.from) {
       return;
     }
-    this.setState({loading: true});
+    setLoading(true);
     api.skypicker
       .getFlights({
         sort: config.sort,
@@ -85,55 +83,56 @@ class App extends React.Component {
         dtimefrom: config.timeFrom,
         dtimeto: config.timeTo
       })
-      .then((flights) => this.setState({flights, loading: false}))
-      .catch((error) => this.setState({error, loading: false}));
-  }
+      .then(setFlights)
+      .catch(setError)
+      .finally(() => {
+        setLoading(false);
+        if (flights && flights.length > 0) {
+          setTimeout(() => scrollToRef(flightsRef), 100);
+        }
+      });
+  };
 
-  render() {
-    const {flights, loading, geoCity, error, config} = this.state;
-    return (
-      <ErrorBoundary>
-        <Nav />
-        <Header
-          geoCity={geoCity}
-          sourceAirport={config.from}
-          onChangeSource={({code, type}) => {
-            this.setState((prevState) => {
-              return {config: {...prevState.config, from: code, fromType: type}};
-            }, this.loadFlights);
-          }}
-          onChangeDestination={({code, type}) => {
-            this.setState((prevState) => {
-              return {config: {...prevState.config, to: code, toType: type}};
-            }, this.loadFlights);
-          }}
-        />
-        <div className={c(styles['theme-page-section'], styles['theme-page-section-gray'])}>
-          <Grid>
-            <Row className="show-grid">
-              {error && (
-                <Alert bsStyle={'danger'}>Something went wrong loading the flight data. Please try again.</Alert>
-              )}
-              {(flights || loading) && (
-                <Col md={3}>
-                  <Filters
-                    config={config}
-                    onChange={(newConfig) => {
-                      this.setState({config: newConfig, loading: true}, this.loadFlights);
-                    }}
-                  />
-                </Col>
-              )}
-              <Col md={flights || loading ? 9 : 12}>
-                <FlightList flights={flights} loading={loading} />
+  useEffect(
+    () => {
+      loadFlights();
+    },
+    [config]
+  );
+
+  return (
+    <ErrorBoundary>
+      <Nav />
+      <Header
+        geoCity={null}
+        sourceAirport={config.from}
+        onChangeSource={({code, type}) => {
+          setConfig({...config, from: code, fromType: type});
+        }}
+        onChangeDestination={({code, type}) => {
+          setConfig({...config, to: code, toType: type});
+        }}
+      />
+      <div className={c(styles['theme-page-section'], styles['theme-page-section-gray'])}>
+        <Grid>
+          <Row className="show-grid">
+            {error && <Alert bsStyle={'danger'}>Something went wrong loading the flight data. Please try again.</Alert>}
+            {(flights || loading) && (
+              <Col md={3}>
+                <Filters config={config} onChange={setConfig} />
               </Col>
-            </Row>
-          </Grid>
-        </div>
-        <Footer />
-      </ErrorBoundary>
-    );
-  }
+            )}
+            <Col md={flights || loading ? 9 : 12}>
+              <div ref={flightsRef}>
+                <FlightList flights={flights} loading={loading} />
+              </div>
+            </Col>
+          </Row>
+        </Grid>
+      </div>
+      <Footer />
+    </ErrorBoundary>
+  );
 }
 
 export default hot(module)(App);
