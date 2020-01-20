@@ -8,7 +8,14 @@ const noLoadingIndicators = [...Array(10).keys()];
 
 export default ({flights, loading}) => {
   if (loading) {
-    return noLoadingIndicators.map((k) => <LoadingIndicator key={k} />);
+    return (
+      <div>
+        <h3>Searching cheapest flights...</h3>
+        {noLoadingIndicators.map((k) => (
+          <LoadingIndicator key={k} />
+        ))}
+      </div>
+    );
   }
 
   if (!flights || flights.length == 0) {

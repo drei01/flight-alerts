@@ -26,5 +26,8 @@ module.exports = merge(commonConfig, {
     new HtmlWebpackHarddiskPlugin({
       outputPath: resolve(__dirname, '..', 'build-dev', 'client')
     })
-  ]
+  ],
+  resolve: {
+    alias: {'react-dom': '@hot-loader/react-dom'}
+  }
 });

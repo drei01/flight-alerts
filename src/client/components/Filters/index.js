@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from '../../style.less';
 import DateFilter from './DateFilter';
 import Filter from './Filter';
@@ -31,11 +31,19 @@ export default ({config, onChange}) => {
               name="startDate"
               placeholder="Depart Date"
               date={startDate ? moment(startDate, 'DD/MM/YYYY') : null}
-              onChange={(date) =>
+              onChange={(date, opts) =>
                 onChange({
                   ...config,
                   startDate: date ? date.format('DD/MM/YYYY') : null,
-                  endDate: date ? date.format('DD/MM/YYYY') : null
+                  endDate: date
+                    ? opts && opts.isWholeMonth
+                      ? date
+                          .clone()
+                          .add('months', 1)
+                          .date(0) // first day of next month
+                          .format('DD/MM/YYYY')
+                      : date.format('DD/MM/YYYY')
+                    : null
                 })
               }
             />
@@ -59,8 +67,9 @@ export default ({config, onChange}) => {
               <DateFilter
                 name="returnDate"
                 placeholder="Return Date"
-                date={returnDate ? moment(returnDate, 'DD/MM/YYYY') : null}
-                startDate={startDate ? moment(startDate, 'DD/MM/YYYY') : null}
+                date={
+                  returnDate ? moment(returnDate, 'DD/MM/YYYY') : startDate ? moment(startDate, 'DD/MM/YYYY') : null
+                }
                 onChange={(date) =>
                   onChange({
                     ...config,
