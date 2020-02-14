@@ -17,7 +17,7 @@ export default function({geoCity, sourceAirport, onChangeSource, onChangeDestina
               <div className={c(styles['theme-search-area-header'], styles['_mb-20'])}>
                 <h1 className={c(styles['theme-search-area-title'], styles['theme-search-area-title-sm'])}>
                   <span>
-                    Find cheap flights from <Airport city={geoCity} onChange={onChangeSource} />
+                    Find cheap flights from <Airport city={geoCity || sourceAirport} onChange={onChangeSource} />
                   </span>
                   {sourceAirport && (
                     <span>

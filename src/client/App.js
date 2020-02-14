@@ -13,6 +13,8 @@ import styles from './style.less';
 import c from 'classnames';
 import ErrorBoundary from './components/ErrorBoundary';
 import Footer from './components/Footer';
+import {assign} from 'lodash/fp';
+import URLSearchParams from '@ungap/url-search-params/cjs';
 
 const DEFAULT_CONFIG = {
   sort: 'price',
@@ -40,11 +42,26 @@ const DEFAULT_CONFIG = {
 
 const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetParent.offsetTop);
 
+const applyParams = assign(DEFAULT_CONFIG);
+const loadConfig = () => {
+  const queryParams = Object.fromEntries(new URLSearchParams(window.location.search));
+  return applyParams(queryParams);
+};
+
 function App() {
   const [flights, setFlights] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
-  const [config, setConfig] = useState(DEFAULT_CONFIG);
+  const [config, setConfig] = useState(loadConfig());
+  const handleConfigChange = (newConfig) => {
+    const {from, to, startDate, returnDate, priceMax} = newConfig;
+    window.history.pushState(
+      '',
+      '',
+      '/?' + new URLSearchParams({from, to, startDate, returnDate, priceMax}).toString()
+    );
+    setConfig(newConfig);
+  };
 
   const flightsRef = useRef(null);
 
@@ -107,10 +124,10 @@ function App() {
         geoCity={null}
         sourceAirport={config.from}
         onChangeSource={({code, type}) => {
-          setConfig({...config, from: code, fromType: type});
+          handleConfigChange({...config, from: code, fromType: type});
         }}
         onChangeDestination={({code, type}) => {
-          setConfig({...config, to: code, toType: type});
+          handleConfigChange({...config, to: code, toType: type});
         }}
       />
       <div className={c(styles['theme-page-section'], styles['theme-page-section-gray'])}>
@@ -119,7 +136,7 @@ function App() {
             {error && <Alert bsStyle={'danger'}>Something went wrong loading the flight data. Please try again.</Alert>}
             {(flights || loading) && (
               <Col md={3}>
-                <Filters config={config} onChange={setConfig} />
+                <Filters config={config} onChange={handleConfigChange} />
               </Col>
             )}
             <Col md={flights || loading ? 9 : 12}>

@@ -31,7 +31,7 @@ export default ({config, onChange}) => {
               name="startDate"
               placeholder="Depart Date"
               date={startDate ? moment(startDate, 'DD/MM/YYYY') : null}
-              onChange={(date, opts) =>
+              onChange={(date, opts) => {
                 onChange({
                   ...config,
                   startDate: date ? date.format('DD/MM/YYYY') : null,
@@ -43,21 +43,28 @@ export default ({config, onChange}) => {
                           .date(0) // first day of next month
                           .format('DD/MM/YYYY')
                       : date.format('DD/MM/YYYY')
-                    : null
-                })
-              }
+                    : null,
+                  returnFlight,
+                  returnDate
+                });
+              }}
             />
           </div>
           <div>
             Return Flight? <br />
             <ReturnFlightFilter
               checked={returnFlight}
-              onChange={(returnFlight) =>
+              onChange={(returnFlight) => {
+                let {returnDate} = config;
+                if (returnFlight) {
+                  returnDate = null;
+                }
                 onChange({
                   ...config,
-                  returnFlight
-                })
-              }
+                  returnFlight,
+                  returnDate
+                });
+              }}
             />
           </div>
         </Filter>
