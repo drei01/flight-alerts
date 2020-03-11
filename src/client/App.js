@@ -15,11 +15,11 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Footer from './components/Footer';
 import {assign} from 'lodash/fp';
 import URLSearchParams from '@ungap/url-search-params/cjs';
+import {getCurrencySymbol} from './currency';
+import {useLocalStorage} from './hooks';
 
 const DEFAULT_CONFIG = {
   sort: 'price',
-  currency: 'GBP',
-  currencySymbol: '£',
   adults: 1,
   from: null,
   fromType: 'airport',
@@ -42,24 +42,31 @@ const DEFAULT_CONFIG = {
 
 const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetParent.offsetTop);
 
-const applyParams = assign(DEFAULT_CONFIG);
-const loadConfig = () => {
-  const queryParams = Object.fromEntries(new URLSearchParams(window.location.search));
-  return applyParams(queryParams);
-};
-
 function App() {
+  const [currency, setCurrency] = useLocalStorage('currency', 'GBP');
+  const applyParams = assign({...DEFAULT_CONFIG, currency, currencySymbol: getCurrencySymbol(currency)});
+  const loadConfig = () => {
+    const queryParams = Object.fromEntries(new URLSearchParams(window.location.search));
+    if (queryParams.currency) {
+      queryParams.currencySymbol = getCurrencySymbol(queryParams.currency);
+    }
+    return applyParams(queryParams);
+  };
+
   const [flights, setFlights] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
   const [config, setConfig] = useState(loadConfig());
   const handleConfigChange = (newConfig) => {
-    const {from, to, startDate, returnDate, priceMax} = newConfig;
-    window.history.pushState(
-      '',
-      '',
-      '/?' + new URLSearchParams({from, to, startDate, returnDate, priceMax}).toString()
-    );
+    const {from, to, startDate, returnDate, priceMax, currency} = newConfig;
+
+    if (from) {
+      window.history.pushState(
+        '',
+        '',
+        '/?' + new URLSearchParams({from, to, startDate, returnDate, priceMax, currency}).toString()
+      );
+    }
     setConfig(newConfig);
   };
 
@@ -76,6 +83,7 @@ function App() {
         asc: 1,
         locale: 'us',
         curr: config.currency,
+        currencySymbol: config.currencySymbol,
         daysInDestinationFrom: '',
         daysInDestinationTo: '',
         adults: config.adults,
@@ -119,7 +127,13 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <Nav />
+      <Nav
+        currency={config.currency}
+        onChangeCurrency={(currency) => {
+          setCurrency(currency);
+          handleConfigChange({...config, currency: currency, currencySymbol: getCurrencySymbol(currency)});
+        }}
+      />
       <Header
         geoCity={null}
         sourceAirport={config.from}

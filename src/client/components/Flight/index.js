@@ -60,7 +60,7 @@ export default ({flight}) => {
             </div>
           </Col>
           <Col md={2}>
-            <BookButton price={flight.price} link={flight.deep_link} />
+            <BookButton price={flight.price} currencySymbol={flight.currencySymbol} link={flight.deep_link} />
           </Col>
         </Row>
       </div>
