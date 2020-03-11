@@ -28,13 +28,13 @@ export default ({flight}) => {
                       {flight.route.map((route) => (
                         <Row key={route.flight_no}>
                           <Col md={3}>
-                            <DateTime date={route.departure} place={flight.cityFrom} />
+                            <DateTime date={route.departure} place={route.cityFrom} />
                           </Col>
                           <Col md={6}>
                             <Route route={route} duration={flight.fly_duration} />
                           </Col>
                           <Col md={3}>
-                            <DateTime date={route.arrival} place={flight.cityTo} />
+                            <DateTime date={route.arrival} place={route.cityTo} />
                           </Col>
                         </Row>
                       ))}
