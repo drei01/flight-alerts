@@ -15,6 +15,7 @@ export default function Footer() {
           </Col>
           <Col md={4}>
             <h4 />
+            <a href="javascript:window.Metomic('ConsentManager:show')">manage cookies</a>
             <Col md={6} />
             <Col md={6} />
           </Col>

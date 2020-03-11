@@ -14,6 +14,11 @@ module.exports = merge(commonConfig, {
       location: 'head',
       priority: 'high'
     }),
+    new HtmlWebpackPartialsPlugin({
+      path: './src/client/partials/metomic.html',
+      location: 'head',
+      priority: 'high'
+    }),
     new UglifyJsPlugin({
       parallel: true,
       extractComments: true
