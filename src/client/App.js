@@ -72,6 +72,13 @@ function App() {
 
   const flightsRef = useRef(null);
 
+  const setPageTitle = (flights) => {
+    if (flights && flights.length > 0) {
+      document.title = `Cheap flights from ${flights[0].cityFrom}`;
+    }
+    return flights;
+  };
+
   const loadFlights = () => {
     if (!config.from) {
       return;
@@ -108,6 +115,7 @@ function App() {
         dtimefrom: config.timeFrom,
         dtimeto: config.timeTo
       })
+      .then(setPageTitle)
       .then(setFlights)
       .catch(setError)
       .finally(() => {
