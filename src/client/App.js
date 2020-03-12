@@ -5,7 +5,7 @@ import {hot} from 'react-hot-loader';
 import api from './api';
 import FlightList from './components/FlightList';
 import Filters from './components/Filters';
-import {Grid, Row, Col, Alert} from 'react-bootstrap';
+import {Grid, Row, Col, Alert, Button} from 'react-bootstrap';
 import moment from 'moment';
 import Header from './components/Header';
 import Nav from './components/Nav';
@@ -17,6 +17,7 @@ import {assign} from 'lodash/fp';
 import URLSearchParams from '@ungap/url-search-params/cjs';
 import {getCurrencySymbol} from './currency';
 import {useLocalStorage} from './hooks';
+import useMedia from 'use-media';
 
 const DEFAULT_CONFIG = {
   sort: 'price',
@@ -43,6 +44,8 @@ const DEFAULT_CONFIG = {
 const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetParent.offsetTop);
 
 function App() {
+  const isWide = useMedia({minWidth: '768px'});
+  const [showFilters, setShowFilters] = useState(isWide);
   const [currency, setCurrency] = useLocalStorage('currency', 'GBP');
   const applyParams = assign({...DEFAULT_CONFIG, currency, currencySymbol: getCurrencySymbol(currency)});
   const loadConfig = () => {
@@ -158,7 +161,16 @@ function App() {
             {error && <Alert bsStyle={'danger'}>Something went wrong loading the flight data. Please try again.</Alert>}
             {(flights || loading) && (
               <Col md={3}>
-                <Filters config={config} onChange={handleConfigChange} />
+                <Row>
+                  <Col md={12}>
+                    <Button onClick={() => setShowFilters(!showFilters)} className="pull-right">
+                      {showFilters ? 'Hide' : 'Show'} Filters
+                    </Button>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12}>{showFilters && <Filters config={config} onChange={handleConfigChange} />}</Col>
+                </Row>
               </Col>
             )}
             <Col md={flights || loading ? 9 : 12}>
