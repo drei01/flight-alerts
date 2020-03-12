@@ -12,7 +12,7 @@ export default ({flights, loading}) => {
       <div>
         <h3>Searching cheapest flights...</h3>
         {noLoadingIndicators.map((k) => (
-          <LoadingIndicator key={k} />
+          <LoadingIndicator key={k} ariaLabel="Loading flights..." />
         ))}
       </div>
     );
