@@ -18,23 +18,23 @@ export default function({currency, onChangeCurrency}) {
         styles['navbar-theme-transparent']
       )}
     >
-      <Navbar.Header>
+      <Navbar.Header className={styles['navbar-fullwidth']}>
         <Navbar.Brand>
           <a href="#" className={styles.logo}>
             <img src="flight-pop.svg" />
             FlightPop
           </a>
         </Navbar.Brand>
+        <Navbar.Form pullRight>
+          <DropdownButton pullRight title={displayFormat(currency)} id="dropdown-menu-align-right">
+            {CURRENCIES.map((currency) => (
+              <MenuItem key={currency} eventKey={currency} onClick={() => onChangeCurrency(currency)}>
+                {displayFormat(currency)}
+              </MenuItem>
+            ))}
+          </DropdownButton>
+        </Navbar.Form>
       </Navbar.Header>
-      <Navbar.Form pullRight>
-        <DropdownButton pullRight title={displayFormat(currency)} id="dropdown-menu-align-right">
-          {CURRENCIES.map((currency) => (
-            <MenuItem eventKey={currency} onClick={() => onChangeCurrency(currency)}>
-              {displayFormat(currency)}
-            </MenuItem>
-          ))}
-        </DropdownButton>
-      </Navbar.Form>
     </Navbar>
   );
 }
