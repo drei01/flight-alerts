@@ -101,7 +101,7 @@
     "body-parser": "1.18.3",
     "bootstrap": "^3.3.7",
     "compression": "1.7.3",
-    "cross-env": "5.2.0",
+    "cross-env": "5.2.1",
     "express": "4.16.3",
     "fast-safe-stringify": "2.0.5",
     "install": "^0.13.0",
