@@ -36,6 +36,11 @@ module.exports = async () =>
         location: 'head',
         priority: 'high'
       }),
+      new HtmlWebpackPartialsPlugin({
+        path: './src/client/partials/mailerlite.html',
+        location: 'head',
+        priority: 'low'
+      }),
       new UglifyJsPlugin({
         parallel: true,
         extractComments: true
