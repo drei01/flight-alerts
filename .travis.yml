@@ -6,7 +6,7 @@ branches:
 language: node_js
 node_js:
   - "node"
-  - "8.9"
+  - "8.17"
 script:
   - npm run lint
   - npm run build
