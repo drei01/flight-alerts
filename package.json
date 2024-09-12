@@ -98,7 +98,7 @@
     "@ungap/url-search-params": "^0.1.4",
     "airport-codes-updated": "^1.0.0",
     "axios": "^0.19.0",
-    "body-parser": "1.18.3",
+    "body-parser": "1.20.3",
     "bootstrap": "^3.3.7",
     "compression": "1.7.3",
     "cross-env": "5.2.0",
