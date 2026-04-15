@@ -103,7 +103,7 @@
     "compression": "1.7.3",
     "cross-env": "5.2.0",
     "express": "4.16.3",
-    "fast-safe-stringify": "2.0.5",
+    "fast-safe-stringify": "2.1.1",
     "install": "^0.13.0",
     "moment": "^2.24.0",
     "npm": "^6.12.1",
